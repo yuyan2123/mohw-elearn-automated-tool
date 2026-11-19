@@ -1,0 +1,117 @@
+/* Hallmark · shape: app screen · theme: Dose · deal: manual · signature: reading-time ledger · v2.0.0 */
+/* Compact sidebar module with a shared time column and one primary action. */
+:root {
+  --es-ink: #182f2b;
+  --es-muted: #415951;
+  --es-panel: #f3f6f0;
+  --es-line: #c5d1ca;
+  --es-accent: #13614f;
+  --es-hover: #0d4c3d;
+  --es-disabled-fill: #e4ebe4;
+  --es-disabled-ink: #455a51;
+  --es-paper: #f9fcf8;
+  --es-focus: #9a3b00;
+  --es-font: system-ui, "Microsoft JhengHei", sans-serif;
+}
+
+#e-study-panel {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 16px 8px;
+  padding: 12px;
+  border: 1px solid var(--es-line);
+  border-radius: 8px;
+  background: var(--es-panel);
+  color: var(--es-ink);
+  font-family: var(--es-font);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+#e-study-panel * { box-sizing: border-box; }
+#e-study-panel [hidden] { display: none !important; }
+#e-study-panel h2 {
+  min-width: 0;
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--es-ink);
+  font: 650 16px/1.4 var(--es-font);
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+#e-study-panel dl {
+  margin: 0;
+  padding: 4px 0;
+  border-block: 1px solid var(--es-line);
+}
+
+#e-study-panel dl div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  padding: 2px 0;
+}
+
+#e-study-panel dt { color: var(--es-muted); font-weight: 400; }
+#e-study-panel dd { margin: 0; font-weight: 650; font-variant-numeric: tabular-nums; }
+#e-study-panel p { margin: 8px 0; color: var(--es-muted); overflow-wrap: break-word; }
+
+#e-study-panel button {
+  width: 100%;
+  min-height: 36px;
+  margin: 0 0 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--es-line);
+  border-radius: 5px;
+  background: var(--es-paper);
+  color: var(--es-ink);
+  font: 650 13px/1.4 var(--es-font);
+  white-space: normal;
+  cursor: pointer;
+}
+
+#e-study-panel button[data-primary] {
+  border-color: var(--es-accent);
+  background: var(--es-accent);
+  color: var(--es-paper);
+}
+
+#e-study-panel button:not(:disabled):hover { border-color: var(--es-accent); }
+#e-study-panel button[data-primary]:not(:disabled):hover { background: var(--es-hover); }
+#e-study-panel button:not(:disabled):active { transform: translateY(1px); }
+#e-study-panel button:disabled,
+#e-study-panel button[data-primary]:disabled {
+  border-color: var(--es-line);
+  background: var(--es-disabled-fill);
+  color: var(--es-disabled-ink);
+  cursor: not-allowed;
+}
+#e-study-panel :is(button, input):focus-visible {
+  outline: 2px solid var(--es-focus);
+  outline-offset: 2px;
+}
+
+#e-study-panel label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 4px 0 0;
+  color: var(--es-muted);
+  font: 400 12px/1.5 var(--es-font);
+}
+
+#e-study-panel input[type=checkbox] {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin: 2px 0 0;
+  accent-color: var(--es-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #e-study-panel button:not(:disabled):active { transform: none; }
+}

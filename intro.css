@@ -1,0 +1,97 @@
+#e-study-intro {
+  --es-overlay: rgb(72 72 72 / 50%);
+  --es-tip-surface: #f9fcf8;
+  --es-tip-ink: #182f2b;
+  --es-tip-action: #13614f;
+  --es-tip-hover: #0d4c3d;
+  --es-tip-focus: #9a3b00;
+  --es-tip-shadow: rgb(14 38 31 / 24%);
+  --es-tip-font: system-ui, "Microsoft JhengHei", sans-serif;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: clip;
+  background: none;
+  pointer-events: none;
+}
+
+#e-study-intro::backdrop {
+  background: none;
+  pointer-events: none;
+}
+
+#e-study-intro .e-study-spotlight {
+  position: absolute;
+  border-radius: 10px;
+  box-shadow: 0 0 0 150vmax var(--es-overlay);
+}
+
+#e-study-intro .e-study-tip {
+  position: absolute;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--es-tip-surface);
+  box-shadow: 0 3px 12px var(--es-tip-shadow);
+  color: var(--es-tip-ink);
+  font: 400 15px/1.55 var(--es-tip-font);
+  pointer-events: auto;
+}
+
+#e-study-intro .e-study-tip::before {
+  position: absolute;
+  width: 30px;
+  height: 16px;
+  background: var(--es-tip-surface);
+  clip-path: polygon(0 50%, 31% 0, 31% 35%, 100% 35%, 100% 65%, 31% 65%, 31% 100%);
+  content: "";
+  pointer-events: none;
+}
+
+#e-study-intro .e-study-tip[data-arrow="left"]::before {
+  right: 100%;
+  top: calc(var(--es-tip-arrow-offset) - 8px);
+}
+
+#e-study-intro .e-study-tip[data-arrow="down"]::before,
+#e-study-intro .e-study-tip[data-arrow="up"]::before {
+  left: calc(var(--es-tip-arrow-offset) - 15px);
+}
+
+#e-study-intro .e-study-tip[data-arrow="down"]::before {
+  top: calc(100% + 7px);
+  transform: rotate(-90deg);
+}
+
+#e-study-intro .e-study-tip[data-arrow="up"]::before {
+  bottom: calc(100% + 7px);
+  transform: rotate(90deg);
+}
+
+#e-study-intro p { margin: 0 0 8px; }
+
+#e-study-intro button {
+  min-height: 32px;
+  margin: 0;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--es-tip-action);
+  color: var(--es-tip-surface);
+  font: 650 13px/1.4 var(--es-tip-font);
+  cursor: pointer;
+}
+
+#e-study-intro button:hover { background: var(--es-tip-hover); }
+#e-study-intro button:focus-visible {
+  outline: 2px solid var(--es-tip-focus);
+  outline-offset: 2px;
+}
