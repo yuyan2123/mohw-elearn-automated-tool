@@ -54,6 +54,7 @@
   let snapshot = null;
   let videoState = "waiting";
   let fileReady = false;
+  let resource = null;
   let resourceRequest = 0;
   let receivedAt = 0;
   let playbackSeen = false;
@@ -264,24 +265,39 @@
     }
   }
 
-  function onResourceMessage(event) {
-    if (event.data?.request !== resourceRequest) return;
-    if (event.origin === lcms && snapshot?.fileFrame
-      && event.source === snapshot.fileFrame.contentWindow
-      && event.data.type === "e-study:file-state" && typeof event.data.ready === "boolean") {
-      receivedAt = performance.now();
-      fileReady = event.data.ready;
+  function closeResource() {
+    resource?.port.close();
+    resource = null;
+  }
+
+  function onResourceReady(event) {
+    if (event.data?.type !== "e-study:resource-ready" || !event.ports.length) return;
+    const [port] = event.ports;
+    const video = event.origin === youtube;
+    const frame = video ? snapshot?.frame : event.origin === lcms ? snapshot?.fileFrame : null;
+    if (!frame?.isConnected || frame.contentWindow !== event.source) {
+      port.close();
       return;
     }
-    if (event.origin !== youtube || !snapshot?.frame
-      || event.source !== snapshot.frame.contentWindow || event.data?.type !== "e-study:video-state"
-      || !["waiting", "paused", "playing", "ended", "ad", "blocked"].includes(event.data.state)) return;
-    receivedAt = performance.now();
-    applyVideoState(event.data.state);
+
+    closeResource();
+    const connection = { frame, port };
+    resource = connection;
+    port.onmessage = ({ data }) => {
+      if (resource !== connection || data?.request !== resourceRequest || !frame.isConnected) return;
+      if (video && ["waiting", "paused", "playing", "ended", "ad", "blocked"].includes(data.state)) {
+        receivedAt = performance.now();
+        applyVideoState(data.state);
+      } else if (!video && typeof data.ready === "boolean") {
+        receivedAt = performance.now();
+        fileReady = data.ready;
+      }
+    };
   }
 
   function stimulate() {
     const next = collect();
+    if (resource && resource.frame !== (next.frame || next.fileFrame)) closeResource();
     if (snapshot && next.selected !== snapshot.selected) {
       totals = 0;
       fileCheckIssued = false;
@@ -317,12 +333,12 @@
 
     if (next.active && next.index >= 0) {
       const play = autoplayLesson === next.selected && next.present && inForeground();
-      if (next.frame) {
-        if (performance.now() - receivedAt > 2500 && videoState !== "ended") applyVideoState("waiting");
-        next.frame.contentWindow?.postMessage({ type: "e-study:video-query", request: ++resourceRequest, play }, youtube);
-      } else if (next.fileFrame) {
-        if (performance.now() - receivedAt > 2500) fileReady = false;
-        next.fileFrame.contentWindow?.postMessage({ type: "e-study:file-query", request: ++resourceRequest }, lcms);
+      if (next.frame || next.fileFrame) {
+        if (performance.now() - receivedAt > 2500) {
+          if (next.frame && videoState !== "ended") applyVideoState("waiting");
+          fileReady = false;
+        }
+        resource?.port.postMessage({ request: ++resourceRequest, play });
       } else if (next.video) {
         const { ended, paused, seeking, readyState } = next.video;
         if (play && !ended && paused && attemptedVideo !== next.video) {
@@ -376,7 +392,7 @@
     if (event.isTrusted) autoNextEnabled = controls.auto.checked;
   });
 
-  addEventListener("message", onResourceMessage);
+  top.addEventListener("message", onResourceReady);
   function resetSample() {
     lastSample = null;
     if (!inForeground()) playbackSeen = false;
@@ -386,7 +402,8 @@
   const refresh = setInterval(stimulate, 750);
   addEventListener("pagehide", () => {
     clearInterval(refresh);
-    removeEventListener("message", onResourceMessage);
+    top.removeEventListener("message", onResourceReady);
+    closeResource();
     top.removeEventListener("blur", resetSample);
     top.document.removeEventListener("visibilitychange", resetSample);
   }, { once: true });

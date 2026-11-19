@@ -1,0 +1,161 @@
+/* Hallmark · shape: app screen · theme: Dose · signature: classroom start screenshot · v2.0.0 */
+/* The toolbar menu keeps three large targets, with the same green and type as the classroom panel. */
+:root {
+  --ink: #182f2b;
+  --muted: #415951;
+  --paper: #f9fcf8;
+  --panel: #f3f6f0;
+  --line: #849b90;
+  --accent: #13614f;
+  --accent-hover: #0d4c3d;
+  --accent-pressed: #0a4034;
+  --neutral-pressed: #e4ebe4;
+  --focus: #9a3b00;
+  --font: system-ui, "Microsoft JhengHei", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 18px/1.65 var(--font);
+}
+
+h1,
+h2,
+p,
+figure {
+  margin: 0;
+}
+
+h1 {
+  min-width: 0;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+  font-size: 32px;
+  line-height: 1.25;
+}
+
+h2 {
+  min-width: 0;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+  font-size: 22px;
+  line-height: 1.35;
+}
+
+h2 + p,
+p + p { margin-block-start: 8px; }
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+a:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.popup {
+  inline-size: 352px;
+  max-inline-size: 100%;
+}
+
+.popup-menu { padding: 20px; }
+.popup-menu h1 { font-size: 24px; }
+.popup-menu nav {
+  display: grid;
+  gap: 12px;
+  margin-block-start: 16px;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-block-size: 52px;
+  padding: 8px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.menu-link img { flex: none; }
+.menu-link:hover { background: var(--panel); }
+.menu-link:active { background: var(--neutral-pressed); }
+.menu-link.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.menu-link.primary:hover { background: var(--accent-hover); }
+.menu-link.primary:active { background: var(--accent-pressed); }
+
+.document .sheet {
+  max-inline-size: 920px;
+  margin-inline: auto;
+  padding: 40px 24px;
+}
+
+.guide-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 290px);
+  align-items: start;
+  gap: 32px;
+  margin-block-start: 24px;
+}
+
+.steps {
+  display: grid;
+  gap: 20px;
+  margin: 0;
+  padding-inline-start: 28px;
+}
+
+.steps li::marker {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.guide-image img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.guide-image figcaption,
+.policy-date {
+  margin-block-start: 8px;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.support-note,
+.policy section {
+  margin-block-start: 24px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--line);
+}
+
+.document .policy { max-inline-size: 720px; }
+
+@media (max-width: 640px) {
+  .document .sheet { padding: 24px 16px; }
+  .guide-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .guide-image { max-inline-size: 290px; }
+}

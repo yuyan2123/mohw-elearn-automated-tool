@@ -1,5 +1,4 @@
 (() => {
-  const classroomOrigin = "https://mohw.elearn.hrd.gov.tw";
   const asset = location.pathname.match(/^\/asset\/play\/(\d+)\/?$/);
   if (window === top || !asset) return;
 
@@ -33,13 +32,5 @@
       && ((response.responseStatus >= 200 && response.responseStatus < 300) || response.responseStatus === 304));
   }
 
-  addEventListener("message", event => {
-    if (event.origin !== classroomOrigin || !event.source
-      || event.data?.type !== "e-study:file-query"
-      || !Number.isSafeInteger(event.data.request)) return;
-
-    event.source.postMessage({
-      type: "e-study:file-state", request: event.data.request, ready: fileIsReady()
-    }, classroomOrigin);
-  });
+  connectStudyResource(() => ({ ready: fileIsReady() }));
 })();
