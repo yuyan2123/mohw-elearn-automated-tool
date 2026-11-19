@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "e 學園學習助手",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "查看平臺閱讀時數，並在正常結算後接續教材。",
   "permissions": ["storage"],
   "background": {
